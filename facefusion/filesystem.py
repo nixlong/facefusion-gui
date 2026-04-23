@@ -140,6 +140,10 @@ def remove_file(file_path : str) -> bool:
 
 def resolve_file_paths(directory_path : str) -> List[str]:
 	file_paths : List[str] = []
+ 
+	# WORKAROUND: nix 2026.04.20
+	if 'FACEFUSION_ROOT_PREFIX' in os.environ: 
+		directory_path = os.environ['FACEFUSION_ROOT_PREFIX'] + directory_path
 
 	if is_directory(directory_path):
 		file_names_and_extensions = sorted(os.listdir(directory_path))
