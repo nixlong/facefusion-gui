@@ -149,6 +149,12 @@ class FaceFusionStateItems(BaseModel):
     # 系统策略
     video_memory_strategy: Optional[str] = None
     voice_extractor_model: Optional[str] = None
+    
+    # 额外扩展
+    preview_mode: Optional[str] = None
+    preview_resolution: Optional[str] = None
+
+
 
 class ApiResponse(BaseModel):
     success: bool
