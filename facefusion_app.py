@@ -21,6 +21,7 @@ class FaceFusionApp:
 		# 让后续 conda.setup() / core.cli() 正常读取 run 参数
 		# ==============================================
 		os.environ['OMP_NUM_THREADS'] = '1'
+		os.environ['FACEOFF_MASTER']  = '1'
 
 		sys.argv = [sys.argv[0], "run"]
 

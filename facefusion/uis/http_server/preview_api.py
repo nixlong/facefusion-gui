@@ -199,6 +199,10 @@ def prepare_output_frame(target_vision_frame: VisionFrame,
 
 
 def run_preview_task():
+    source_vision_frames = None
+    reference_vision_frame = None
+    temp_vision_frame = None
+    preview_vision_frame = None
     try:
         preview_task_manager.set_status(PreviewTaskStatus.RUNNING)
 
@@ -224,6 +228,8 @@ def run_preview_task():
 
         preview_mode = state_manager.get_item('preview_mode') or 'default'
         preview_resolution = state_manager.get_item('preview_resolution') or '512x512'
+        
+        print(f'target_path: {state_manager.get_item("target_path")}')
 
         if is_image(state_manager.get_item('target_path')):
             reference_vision_frame = read_static_image(state_manager.get_item('target_path'))
@@ -239,7 +245,9 @@ def run_preview_task():
                 preview_mode,
                 preview_resolution
             )
-            output_dir = r'e:\12_facefusion\output_temp'
+            # 获取执行根目录
+            root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            output_dir = os.path.join(root_dir, 'output_temp')
             os.makedirs(output_dir, exist_ok=True)
             filepath = os.path.join(output_dir, f'{uuid.uuid4().hex}.png')
             cv2.imwrite(filepath, preview_vision_frame)
@@ -267,7 +275,9 @@ def run_preview_task():
                 preview_mode,
                 preview_resolution
             )
-            output_dir = r'e:\12_facefusion\output_temp'
+            # 获取执行根目录
+            root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            output_dir = os.path.join(root_dir, 'output_temp')
             os.makedirs(output_dir, exist_ok=True)
             filepath = os.path.join(output_dir, f'{uuid.uuid4().hex}.png')
             cv2.imwrite(filepath, preview_vision_frame)
@@ -280,6 +290,13 @@ def run_preview_task():
         import traceback
         traceback.print_exc()
         preview_task_manager.set_status(PreviewTaskStatus.FAILED, error=str(e))
+    finally:
+        import gc
+        del source_vision_frames
+        del reference_vision_frame
+        del temp_vision_frame
+        del preview_vision_frame
+        gc.collect()
 
 
 @preview_router.post("/api/v1/preview/submit", response_model=ApiResponse)

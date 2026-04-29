@@ -71,7 +71,7 @@ def start_http_api_server() -> None:
         # 启动 HTTP API 服务器
         def run_api_server():
             print("[Facefusion API] HTTP API server starting on http://127.0.0.1:7863")
-            uvicorn.run(api_app, host="127.0.0.1", port=7863)
+            uvicorn.run(api_app, host="127.0.0.1", port=7863)            
         
         # 在后台线程中启动 HTTP API 服务器
         api_thread = threading.Thread(target=run_api_server, daemon=True)

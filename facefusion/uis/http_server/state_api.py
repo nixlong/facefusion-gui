@@ -5,6 +5,7 @@ from typing import List, Optional
 
 from facefusion import state_manager
 from facefusion.uis.http_server.models import ApiResponse, StateItemRequest, StateBatchRequest, FaceFusionStateItems
+from facefusion.uis.ui_helper import convert_str_none
 
 state_router = APIRouter()
 
@@ -33,8 +34,14 @@ async def set_state_item(params: FaceFusionStateItems):
     try:
         params_dict = params.dict(exclude_unset=True)
         for key, value in params_dict.items():
-            state_manager.set_item(key, value)
-            print(f'Update state item {key} to {value}')
+            #state_manager.set_item(key, value)
+            # special case: face_selector_race
+            if key in ['face_selector_race', 'face_selector_gender']:
+                state_manager.init_item(key, convert_str_none(value))
+            else:
+                state_manager.init_item(key, value)
+            import multiprocessing
+            print(f'Update state item {key} to {value} in process {multiprocessing.current_process().name}')
         return ApiResponse(success=True, message="State updated")
     except Exception as e:
         return ApiResponse(success=False, message=str(e))
@@ -45,7 +52,8 @@ async def set_batch_state(request: StateBatchRequest):
     try:
         batch_data = request.model_dump(exclude_none=True)
         for key, value in batch_data.items():
-            state_manager.set_item(key, value)
+            #state_manager.set_item(key, value)
+            state_manager.init_item(key, value)
         return ApiResponse(success=True, message="Batch state updated")
     except Exception as e:
         return ApiResponse(success=False, message=str(e))

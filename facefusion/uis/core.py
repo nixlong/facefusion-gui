@@ -96,14 +96,15 @@ def launch() -> None:
 				ui_layout_module.listen()
 
 	# 启动独立的 HTTP API 服务器
-	print("[Facefusion API] Starting HTTP API server...")
-	try:
-		from facefusion.uis.http_server import start_http_api_server
-		start_http_api_server()
-	except Exception as e:
-		print(f"[Facefusion API] Failed to start HTTP API server: {e}")
-		import traceback
-		traceback.print_exc()
+	if os.environ.get('FACEOFF_MASTER', '0') == '1':
+		print("[Facefusion API] Starting HTTP API server...")
+		try:
+			from facefusion.uis.http_server import start_http_api_server
+			start_http_api_server()
+		except Exception as e:
+			print(f"[Facefusion API] Failed to start HTTP API server: {e}")
+			import traceback
+			traceback.print_exc()
 
 	for ui_layout in state_manager.get_item('ui_layouts'):
 		ui_layout_module = load_ui_layout_module(ui_layout)
