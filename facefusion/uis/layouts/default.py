@@ -122,6 +122,7 @@ def listen() -> None:
 
 
 def run(ui : gradio.Blocks) -> None:
+    import os
     if os.environ.get('FACEOFF_MASTER', '0') == '1':
         ui.launch(favicon_path = 'facefusion.ico', show_api = True)
     else:

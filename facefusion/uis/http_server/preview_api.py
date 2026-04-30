@@ -245,9 +245,8 @@ def run_preview_task():
                 preview_mode,
                 preview_resolution
             )
-            # 获取执行根目录
-            root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-            output_dir = os.path.join(root_dir, 'output_temp')
+            # 获取执行根目录            
+            output_dir = os.environ['FACEOFF_MASTER_TEMP_DIR']
             os.makedirs(output_dir, exist_ok=True)
             filepath = os.path.join(output_dir, f'{uuid.uuid4().hex}.png')
             cv2.imwrite(filepath, preview_vision_frame)
@@ -275,9 +274,8 @@ def run_preview_task():
                 preview_mode,
                 preview_resolution
             )
-            # 获取执行根目录
-            root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-            output_dir = os.path.join(root_dir, 'output_temp')
+            # 获取执行根目录            
+            output_dir = os.environ['FACEOFF_MASTER_TEMP_DIR']
             os.makedirs(output_dir, exist_ok=True)
             filepath = os.path.join(output_dir, f'{uuid.uuid4().hex}.png')
             cv2.imwrite(filepath, preview_vision_frame)
