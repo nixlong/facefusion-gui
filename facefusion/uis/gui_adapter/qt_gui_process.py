@@ -159,45 +159,20 @@ def clear_process_environment():
     try:
         from facefusion import state_manager
         from facefusion.temp_helper import clear_temp_directory
-
+        
         target_path = state_manager.get_item('target_path')
         if target_path:
             clear_temp_directory(target_path)
             print(f"[Process] 已清理临时目录: {target_path}")
-
+        
         from facefusion.vision import read_static_image, read_static_video_frame
         read_static_image.cache_clear()
         read_static_video_frame.cache_clear()
         print("[Process] 已清理图像缓存")
-
-        try:
-            from facefusion.audio import read_static_audio, read_static_voice
-            read_static_audio.cache_clear()
-            read_static_voice.cache_clear()
-            print("[Process] 已清理音频缓存")
-        except Exception:
-            pass
-
-        try:
-            from facefusion.face_store import clear_static_faces
-            clear_static_faces()
-            print("[Process] 已清理面部缓存")
-        except Exception:
-            pass
-
-        try:
-            from facefusion.processors.core import get_processors_modules
-            processors = state_manager.get_item('processors') or []
-            for processor_module in get_processors_modules(processors):
-                if hasattr(processor_module, 'clear_inference_pool'):
-                    processor_module.clear_inference_pool()
-            print("[Process] 已清理推理池")
-        except Exception:
-            pass
-
+        
         gc.collect()
         print("[Process] 已执行垃圾回收")
-
+        
         print("[Process] 执行环境清理完成")
     except Exception as e:
         print(f"[Process] 清理环境时出错: {e}")

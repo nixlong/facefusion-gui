@@ -68,3 +68,10 @@ async def clear_state_item(key: str):
         return ApiResponse(success=True, message="State cleared")
     except Exception as e:
         return ApiResponse(success=False, message=str(e))
+
+@state_router.get("/api/v1/loopback_test", response_model=ApiResponse)
+async def loopback_test():
+    try:
+        return ApiResponse(success=True, message="success")
+    except Exception as e:
+        return ApiResponse(success=False, message=str(e))
