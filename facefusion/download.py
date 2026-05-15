@@ -15,7 +15,7 @@ from facefusion.types import Command, DownloadProvider, DownloadSet
 
 def open_curl(commands : List[Command]) -> subprocess.Popen[bytes]:
 	commands = curl_builder.run(commands)
-	return subprocess.Popen(commands, stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+	return subprocess.Popen(commands, stdin = subprocess.PIPE, stdout = subprocess.PIPE, creationflags = 0x08000000 if os.name == 'nt' else 0)
 
 
 def conditional_download(download_directory_path : str, urls : List[str]) -> None:

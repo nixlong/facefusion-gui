@@ -513,7 +513,7 @@ def get_model_name() -> str:
 def register_args(program : ArgumentParser) -> None:
 	group_processors = find_argument_group(program, 'processors')
 	if group_processors:
-		group_processors.add_argument('--face-swapper-model', help = translator.get('help.model', __package__), default = config.get_str_value('processors', 'face_swapper_model', 'ghost_3_256'), choices = face_swapper_choices.face_swapper_models)
+		group_processors.add_argument('--face-swapper-model', help = translator.get('help.model', __package__), default = config.get_str_value('processors', 'face_swapper_model', 'hyperswap_1a_256'), choices = face_swapper_choices.face_swapper_models)
 		known_args, _ = program.parse_known_args()
 		face_swapper_pixel_boost_choices = face_swapper_choices.face_swapper_set.get(known_args.face_swapper_model)
 		group_processors.add_argument('--face-swapper-pixel-boost', help = translator.get('help.pixel_boost', __package__), default = config.get_str_value('processors', 'face_swapper_pixel_boost', get_first(face_swapper_pixel_boost_choices)), choices = face_swapper_pixel_boost_choices)

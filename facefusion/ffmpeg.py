@@ -19,7 +19,7 @@ def run_ffmpeg_with_progress(commands : List[Command], update_progress : UpdateP
 	commands.extend(ffmpeg_builder.set_progress())
 	commands.extend(ffmpeg_builder.cast_stream())
 	commands = ffmpeg_builder.run(commands)
-	process = subprocess.Popen(commands, stderr = subprocess.PIPE, stdout = subprocess.PIPE)
+	process = subprocess.Popen(commands, stderr = subprocess.PIPE, stdout = subprocess.PIPE, creationflags = 0x08000000 if os.name == 'nt' else 0)
 
 	while process_manager.is_processing():
 		try:
@@ -48,7 +48,7 @@ def update_progress(progress : tqdm, frame_number : int) -> None:
 def run_ffmpeg(commands : List[Command]) -> subprocess.Popen[bytes]:
 	log_level = state_manager.get_item('log_level')
 	commands = ffmpeg_builder.run(commands)
-	process = subprocess.Popen(commands, stderr = subprocess.PIPE, stdout = subprocess.PIPE)
+	process = subprocess.Popen(commands, stderr = subprocess.PIPE, stdout = subprocess.PIPE, creationflags = 0x08000000 if os.name == 'nt' else 0)
 
 	while process_manager.is_processing():
 		try:
@@ -67,7 +67,7 @@ def run_ffmpeg(commands : List[Command]) -> subprocess.Popen[bytes]:
 
 def open_ffmpeg(commands : List[Command]) -> subprocess.Popen[bytes]:
 	commands = ffmpeg_builder.run(commands)
-	return subprocess.Popen(commands, stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+	return subprocess.Popen(commands, stdin = subprocess.PIPE, stdout = subprocess.PIPE, creationflags = 0x08000000 if os.name == 'nt' else 0)
 
 
 def log_debug(process : subprocess.Popen[bytes]) -> None:

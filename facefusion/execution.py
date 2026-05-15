@@ -131,7 +131,7 @@ def resolve_openvino_device_type(execution_device_id : int) -> str:
 
 def run_nvidia_smi() -> subprocess.Popen[bytes]:
 	commands = [ shutil.which('nvidia-smi'), '--query', '--xml-format' ]
-	return subprocess.Popen(commands, stdout = subprocess.PIPE)
+	return subprocess.Popen(commands, stdout = subprocess.PIPE, creationflags = 0x08000000 if os.name == 'nt' else 0)
 
 
 @lru_cache()
