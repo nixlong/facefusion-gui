@@ -136,7 +136,7 @@ def create_face_selector_program() -> ArgumentParser:
 def create_face_masker_program() -> ArgumentParser:
 	program = ArgumentParser(add_help = False)
 	group_face_masker = program.add_argument_group('face masker')
-	group_face_masker.add_argument('--face-occluder-model', help = translator.get('help.face_occluder_model'), default = config.get_str_value('face_masker', 'face_occluder_model', 'xseg_1'), choices = facefusion.choices.face_occluder_models)
+	group_face_masker.add_argument('--face-occluder-model', help = translator.get('help.face_occluder_model'), default = config.get_str_value('face_masker', 'face_occluder_model', 'xseg_3'), choices = facefusion.choices.face_occluder_models)
 	group_face_masker.add_argument('--face-parser-model', help = translator.get('help.face_parser_model'), default = config.get_str_value('face_masker', 'face_parser_model', 'bisenet_resnet_34'), choices = facefusion.choices.face_parser_models)
 	group_face_masker.add_argument('--face-mask-types', help = translator.get('help.face_mask_types').format(choices = ', '.join(facefusion.choices.face_mask_types)), default = config.get_str_list('face_masker', 'face_mask_types', 'box'), choices = facefusion.choices.face_mask_types, nargs = '+', metavar = 'FACE_MASK_TYPES')
 	group_face_masker.add_argument('--face-mask-areas', help = translator.get('help.face_mask_areas').format(choices = ', '.join(facefusion.choices.face_mask_areas)), default = config.get_str_list('face_masker', 'face_mask_areas', ' '.join(facefusion.choices.face_mask_areas)), choices = facefusion.choices.face_mask_areas, nargs = '+', metavar = 'FACE_MASK_AREAS')
@@ -150,7 +150,7 @@ def create_face_masker_program() -> ArgumentParser:
 def create_voice_extractor_program() -> ArgumentParser:
 	program = ArgumentParser(add_help = False)
 	group_voice_extractor = program.add_argument_group('voice extractor')
-	group_voice_extractor.add_argument('--voice-extractor-model', help = translator.get('help.voice_extractor_model'), default = config.get_str_value('voice_extractor', 'voice_extractor_model', 'kim_vocal_2'), choices = facefusion.choices.voice_extractor_models)
+	group_voice_extractor.add_argument('--voice-extractor-model', help = translator.get('help.voice_extractor_model'), default = config.get_str_value('voice_extractor', 'voice_extractor_model', 'uvr_mdxnet'), choices = facefusion.choices.voice_extractor_models)
 	job_store.register_step_keys([ 'voice_extractor_model' ])
 	return program
 
