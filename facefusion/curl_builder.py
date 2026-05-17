@@ -1,15 +1,15 @@
 import itertools
-import shutil
 from typing import List
 
 from facefusion import metadata
+from facefusion.common_helper import resolve_executable
 from facefusion.types import Command
 
 
 def run(commands : List[Command]) -> List[Command]:
 	user_agent = metadata.get('name') + '/' + metadata.get('version')
 
-	return [ shutil.which('curl'), '--user-agent', user_agent, '--location', '--silent' ] + commands
+	return [ resolve_executable('curl'), '--user-agent', user_agent, '--location', '--silent' ] + commands
 
 
 def chain(*commands : List[Command]) -> List[Command]:

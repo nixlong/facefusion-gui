@@ -1,5 +1,16 @@
+import os
 import platform
+import shutil
+import sys
 from typing import Any, Iterable, Optional, Reversible, Sequence
+
+
+def resolve_executable(name : str) -> Optional[str]:
+	if getattr(sys, 'frozen', False):
+		bundled = os.path.join(sys._MEIPASS, name)
+		if os.path.isfile(bundled):
+			return bundled
+	return shutil.which(name)
 
 
 def is_linux() -> bool:

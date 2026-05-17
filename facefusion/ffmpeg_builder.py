@@ -1,15 +1,15 @@
 import itertools
-import shutil
 from typing import List, Optional
 
 import numpy
 
+from facefusion.common_helper import resolve_executable
 from facefusion.filesystem import get_file_format
 from facefusion.types import AudioEncoder, Command, CommandSet, Duration, Fps, StreamMode, VideoEncoder, VideoPreset
 
 
 def run(commands : List[Command]) -> List[Command]:
-	return [ shutil.which('ffmpeg'), '-loglevel', 'error' ] + commands
+	return [ resolve_executable('ffmpeg'), '-loglevel', 'error' ] + commands
 
 
 def chain(*commands : List[Command]) -> List[Command]:

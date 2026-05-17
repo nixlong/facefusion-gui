@@ -1,11 +1,11 @@
 import inspect
 import itertools
-import shutil
 import signal
 import sys
 from time import time
 
 from facefusion import benchmarker, cli_helper, content_analyser, face_classifier, face_detector, face_landmarker, face_masker, face_recognizer, hash_helper, logger, state_manager, translator, voice_extractor
+from facefusion.common_helper import resolve_executable
 from facefusion.args import apply_args, collect_job_args, reduce_job_args, reduce_step_args
 from facefusion.download import conditional_download_hashes, conditional_download_sources
 from facefusion.exit_helper import hard_exit, signal_exit
@@ -96,11 +96,11 @@ def pre_check() -> bool:
 		logger.error(translator.get('python_not_supported').format(version = '3.10'), __name__)
 		return False
 
-	if not shutil.which('curl'):
+	if not resolve_executable('curl'):
 		logger.error(translator.get('curl_not_installed'), __name__)
 		return False
 
-	if not shutil.which('ffmpeg'):
+	if not resolve_executable('ffmpeg'):
 		logger.error(translator.get('ffmpeg_not_installed'), __name__)
 		return False
 	return True
