@@ -1,6 +1,7 @@
 import os
 import shutil
 import subprocess
+import sys
 import xml.etree.ElementTree as ElementTree
 from functools import lru_cache
 from typing import List, Optional
@@ -11,7 +12,7 @@ import facefusion.choices
 from facefusion.filesystem import create_directory, is_directory
 from facefusion.types import ExecutionDevice, ExecutionProvider, InferenceOptionSet, InferenceProvider, ValueAndUnit
 
-onnxruntime.set_default_logger_severity(3)
+onnxruntime.set_default_logger_severity(2)
 
 
 def has_execution_provider(execution_provider : ExecutionProvider) -> bool:
@@ -27,6 +28,8 @@ def get_available_execution_providers() -> List[ExecutionProvider]:
 			index = facefusion.choices.execution_providers.index(execution_provider)
 			available_execution_providers.insert(index, execution_provider)
 
+	print(f"[ExecProvider] ORT raw: {inference_session_providers}", file=sys.stderr)
+	print(f"[ExecProvider] resolved: {available_execution_providers}", file=sys.stderr)
 	return available_execution_providers
 
 
@@ -125,8 +128,8 @@ def resolve_cudnn_conv_algo_search() -> str:
 
 def resolve_openvino_device_type(execution_device_id : int) -> str:
 	if execution_device_id == 0:
-		return 'GPU'
-	return 'GPU.' + str(execution_device_id)
+		return 'AUTO'
+	return 'AUTO:' + str(execution_device_id)
 
 
 def run_nvidia_smi() -> subprocess.Popen[bytes]:

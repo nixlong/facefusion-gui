@@ -74,6 +74,8 @@ def create_inference_session(model_path : str, execution_device_id : int, execut
 	try:
 		inference_providers = create_inference_providers(execution_device_id, execution_providers)
 		inference_session = InferenceSession(model_path, providers = inference_providers)
+		active_providers = inference_session.get_providers()
+		logger.info(f"Model [{model_file_name}] providers: {active_providers}", __name__)
 		logger.debug(translator.get('loading_model_succeeded').format(model_name = model_file_name, seconds = calculate_end_time(start_time)), __name__)
 		return inference_session
 
