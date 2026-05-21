@@ -13,19 +13,11 @@ def _init_accelerators():
     if _ACCELERATORS_LOADED:
         return
     _ACCELERATORS_LOADED = True
-    print(f"[Accelerator] _init_accelerators() pid={os.getpid()} "
-          f"frozen={getattr(sys, 'frozen', False)} "
-          f"MEIPASS={getattr(sys, '_MEIPASS', 'N/A')}", file=sys.stderr)
     try:
         from app.core.accelerator_manager import init_accelerators
-        loaded = init_accelerators()
-        print(f"[Accelerator] init done, loaded={len(loaded)} items", file=sys.stderr)
-        for a in loaded:
-            print(f"[Accelerator]   - {a['name']} providers={a['providers']}", file=sys.stderr)
-    except Exception as e:
-        import traceback
-        print(f"[Accelerator] init failed: {e}", file=sys.stderr)
-        traceback.print_exc(file=sys.stderr)
+        init_accelerators()
+    except Exception:
+        pass
 
 
 _init_accelerators()
